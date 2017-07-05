@@ -1,0 +1,28 @@
+{
+  "name": "generator-api",
+  "version": "1.0.0",
+  "description": "Generate an express api with mocha for testing. Supports dynamo for backend.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/superseriouscompany/generator-api.git"
+  },
+  "files": [
+    "generators"
+  ],
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "author": "Neil Sarkar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/superseriouscompany/generator-api/issues"
+  },
+  "homepage": "https://github.com/superseriouscompany/generator-api#readme",
+  "dependencies": {
+    "yeoman-generator": "^1.1.1"
+  }
+}
