@@ -17,6 +17,17 @@ module.exports = class extends Generator {
     })
   }
 
+  writing() {
+    this.fs.copy(
+      this.templatePath('**/*'),
+      this.destinationPath()
+    )
+  }
+
+  // installingPackages() {
+  //    this.npmInstall(['lodash'], { 'save-dev': true })
+  // }
+
   method1() {
     this.log('method 1 just ran');
   }
