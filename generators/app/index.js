@@ -24,15 +24,17 @@ module.exports = class extends Generator {
     )
   }
 
-  // installingPackages() {
-  //    this.npmInstall(['lodash'], { 'save-dev': true })
-  // }
+  installingPackages() {
+    this.npmInstall([
+      'expect',
+      'mocha',
+      'request',
+      'request-promise',
+    ], { 'save-dev': true })
 
-  method1() {
-    this.log('method 1 just ran');
-  }
-
-  method2() {
-    this.log('method 2 just ran');
+    this.npmInstall([
+      'body-parser',
+      'express',
+    ])
   }
 }
