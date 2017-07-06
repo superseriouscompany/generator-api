@@ -7,8 +7,12 @@ module.exports = class extends Generator {
       name:    'name',
       message: 'Project name',
       default: this.appname,
+    }, {
+      type: 'input',
+      name: 'author',
+      message: 'Your name',
+      default: 'Sancho Panza',
     }]).then((answers) => {
-      this.log('app name', answers.name)
       this.answers = answers
     })
   }
@@ -19,7 +23,12 @@ module.exports = class extends Generator {
     this.fs.copyTpl(
       this.templatePath('README.md.tpl'),
       this.destinationPath('README.md'),
-      { name: answers.name }
+      answers
+    )
+    this.fs.copyTpl(
+      this.templatePath('package.json.tpl'),
+      this.destinationPath('package.json'),
+      answers
     )
 
     this.fs.copy(
