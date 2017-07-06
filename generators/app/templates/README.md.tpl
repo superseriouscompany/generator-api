@@ -1,4 +1,8 @@
-# <%= app %>
+# <%= name %>
+
+## Requirements
+
+1. Node 4+
 
 ## Installation
 
@@ -7,6 +11,10 @@
 ## Running
 
     $ npm start
+
+## Running locally
+
+    $ npm run dev
 
 ## Testing
 

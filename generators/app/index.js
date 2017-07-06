@@ -7,24 +7,26 @@ module.exports = class extends Generator {
       name:    'name',
       message: 'Project name',
       default: this.appname,
-    }, {
-      type: 'confirm',
-      name: 'dynamo',
-      message: 'Enable dynamodb support?'
     }]).then((answers) => {
       this.log('app name', answers.name)
-      this.log('dynamo', answers.dynamo)
     })
   }
 
   writing() {
+    this.fs.copyTpl(
+      this.templatePath('README.md.tpl'),
+      this.destinationPath('README.md'),
+      { name: 'dope' }
+    )
+
     this.fs.copy(
-      this.templatePath('**/*'),
+      this.templatePath('**/!(*.tpl)'),
       this.destinationPath()
     )
   }
 
   installingPackages() {
+    return;
     this.npmInstall([
       'expect',
       'mocha',
