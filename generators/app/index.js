@@ -9,14 +9,17 @@ module.exports = class extends Generator {
       default: this.appname,
     }]).then((answers) => {
       this.log('app name', answers.name)
+      this.answers = answers
     })
   }
 
   writing() {
+    const {answers} = this
+
     this.fs.copyTpl(
       this.templatePath('README.md.tpl'),
       this.destinationPath('README.md'),
-      { name: 'dope' }
+      { name: answers.name }
     )
 
     this.fs.copy(
