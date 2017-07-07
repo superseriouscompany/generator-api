@@ -44,13 +44,18 @@ module.exports = class extends Generator {
       this.destinationPath()
     );
 
+    this.fs.copy(
+      this.templatePath('gitignore.tpl'),
+      this.destinationPath('.gitignore')
+    );
+
     [
       'README.md.tpl',
       'package.json.tpl',
       'config/index.js.tpl',
       'config/development.js.tpl',
       'config/production.js.tpl',
-      'config/secrets.js.tpl'
+      'config/secrets.js.tpl',
     ].forEach((path) => {
       this.fs.copyTpl(
         this.templatePath(path),
@@ -69,9 +74,11 @@ module.exports = class extends Generator {
     ], { 'save-dev': true })
 
     this.npmInstall([
+      'aws-sdk',
       'body-parser',
       'express',
-      'aws-sdk',
+      'shortid',
+      'uuid',
     ])
   }
 }
