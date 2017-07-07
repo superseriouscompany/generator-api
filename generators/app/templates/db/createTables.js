@@ -1,5 +1,5 @@
 const config  = require('../config')
-const client  = require('./client')(config.AWS).lowLevel
+const client  = require('./client')(config.AWS, config.dynamoEndpoint).lowLevel
 const schemas = require('./schemas')
 
 schemas.forEach((s) => {

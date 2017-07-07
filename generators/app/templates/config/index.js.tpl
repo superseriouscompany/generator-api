@@ -8,8 +8,9 @@ if( global.TEST_MODE ) {
 }
 
 module.exports = Object.assign({
-  baseUrl:                 '<%= baseUrl %>',
-  awsRegion:               '<%= awsRegion %>',
+  baseUrl:        '<%= baseUrl %>',
+  awsRegion:      '<%= awsRegion %>',
+  usersTableName: '<%= name %>UsersStaging'
 }, require(`./${environment}`));
 
 AWS.config.update({

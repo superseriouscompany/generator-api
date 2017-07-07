@@ -1,7 +1,7 @@
 const shortid = require('shortid')
 const uuid    = require('uuid')
 const config  = require('../config')
-const client  = require('../db/client')(config.AWS)
+const client  = require('../db/client')(config.AWS, config.dynamoEndpoint)
 
 module.exports = {
   create: create,
