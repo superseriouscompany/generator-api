@@ -1,5 +1,6 @@
-const expect = require('expect')
-const api    = require('../helpers/api')
+global.TEST_MODE = true
+const expect     = require('expect')
+const api        = require('../lib/api')
 
 module.exports = function() {
   it("provides healthcheck", function () {
