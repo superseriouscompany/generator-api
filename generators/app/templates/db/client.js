@@ -1,66 +1,66 @@
-const config    = require('../config');
-const promisify = require('bluebird').Promise.promisify;
-const lowLevel  = new config.AWS.DynamoDB(config.dynamoEndpoint);
-const client    = new config.AWS.DynamoDB.DocumentClient(config.dynamoEndpoint);
+const promisifyAll = require('bluebird').promisifyAll;
 
-client.get      = promisify(client.get, {context:      client});
-client.delete   = promisify(client.delete, {context:   client});
-client.put      = promisify(client.put, {context:      client});
-client.query    = promisify(client.query, {context:    client});
-client.scan     = promisify(client.scan, {context:     client});
-client.update   = promisify(client.update, {context:   client});
-client.batchGet = promisify(client.batchGet, {context: client});
+module.exports = function(AWS, endpoint) {
+  AWS = AWS || require('aws-sdk')
 
-client.truncate = function(tableName, schema) {
-  return new Promise(function(resolve, reject) {
-    lowLevel.deleteTable({ TableName: tableName }, function(err) {
-      if( err && err.name != 'ResourceNotFoundException' ) { console.error(err.name); return reject(err); }
+  // TODO: check for region
+  const lowLevel = new AWS.DynamoDB(endpoint)
+  const client   = new AWS.DynamoDB.DocumentClient(endpoint)
 
-      waitForDeletion(tableName, function(err) {
-        if( err ) { return reject(err); }
+  client = promisifyAll(client)
 
-        lowLevel.createTable(schema, function(err) {
+  client.truncate = function(tableName, schema) {
+    return new Promise(function(resolve, reject) {
+      lowLevel.deleteTable({ TableName: tableName }, function(err) {
+        if( err && err.name != 'ResourceNotFoundException' ) { console.error(err.name); return reject(err); }
+
+        waitForDeletion(tableName, function(err) {
           if( err ) { return reject(err); }
 
-          waitForCreation(tableName, function(err) {
+          lowLevel.createTable(schema, function(err) {
             if( err ) { return reject(err); }
-            resolve(true);
+
+            waitForCreation(tableName, function(err) {
+              if( err ) { return reject(err); }
+              resolve(true);
+            })
           })
         })
       })
     })
-  })
-}
+  }
 
-function waitForDeletion(tableName, cb) {
-  lowLevel.describeTable({
-    TableName: tableName,
-  }, function(err, cool) {
-    if( !err ) {
-      return setTimeout(function() {
-        waitForDeletion(tableName, cb);
-      }, 1000);
-    }
-    if( err.name != 'ResourceNotFoundException' ) {
-      return cb(err);
-    }
-    cb();
-  })
-}
+  client.lowLevel = lowLevel
 
-function waitForCreation(tableName, cb) {
-  lowLevel.describeTable({
-    TableName: tableName,
-  }, function(err, data) {
-    if( err ) { return cb(err); }
-    if( data.Table.TableStatus != 'ACTIVE' ) {
-      return setTimeout(function() {
-        waitForCreation(tableName, cb);
-      }, 1000);
-    }
-    cb();
-  })
-}
+  return client
 
-module.exports = client;
-module.exports.lowLevel = lowLevel;
+  function waitForDeletion(tableName, cb) {
+    lowLevel.describeTable({
+      TableName: tableName,
+    }, function(err, cool) {
+      if( !err ) {
+        return setTimeout(function() {
+          waitForDeletion(tableName, cb);
+        }, 1000);
+      }
+      if( err.name != 'ResourceNotFoundException' ) {
+        return cb(err);
+      }
+      cb();
+    })
+  }
+
+  function waitForCreation(tableName, cb) {
+    lowLevel.describeTable({
+      TableName: tableName,
+    }, function(err, data) {
+      if( err ) { return cb(err); }
+      if( data.Table.TableStatus != 'ACTIVE' ) {
+        return setTimeout(function() {
+          waitForCreation(tableName, cb);
+        }, 1000);
+      }
+      cb();
+    })
+  }
+}

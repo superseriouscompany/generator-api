@@ -8,10 +8,28 @@ module.exports = class extends Generator {
       message: 'Project name',
       default: this.appname,
     }, {
-      type: 'input',
-      name: 'author',
+      type:    'input',
+      name:    'author',
       message: 'Your name',
       default: 'Sancho Panza',
+    }, {
+      type:    'input',
+      name:    'awsRegion',
+      message: 'AWS Region',
+      default: 'us-west-2',
+    }, {
+      type:    'input',
+      name:    'awsAccessKey',
+      message: 'AWS Access Key',
+    }, {
+      type:    'input',
+      name:    'awsSecretKey',
+      message: 'AWS Secret Key',
+    }, {
+      type:    'input',
+      name:    'baseUrl',
+      message: 'Base URL of dev server',
+      default: 'https://superserious.ngrok.io',
     }]).then((answers) => {
       this.answers = answers
     })
@@ -20,25 +38,26 @@ module.exports = class extends Generator {
   writing() {
     const {answers} = this
 
-    this.fs.copyTpl(
-      this.templatePath('README.md.tpl'),
-      this.destinationPath('README.md'),
-      answers
-    )
-    this.fs.copyTpl(
-      this.templatePath('package.json.tpl'),
-      this.destinationPath('package.json'),
-      answers
-    )
-
+    // copy over all files that do not end in .tpl
     this.fs.copy(
       this.templatePath('**/!(*.tpl)'),
       this.destinationPath()
-    )
+    );
+
+    [
+      'README.md.tpl',
+      'package.json.tpl',
+      'config/index.js.tpl'
+    ].forEach((path) => {
+      this.fs.copyTpl(
+        this.templatePath(path),
+        this.destinationPath(path.replace(/\.tpl$/, '')),
+        answers
+      )
+    })
   }
 
   installingPackages() {
-    return;
     this.npmInstall([
       'expect',
       'mocha',
@@ -49,6 +68,7 @@ module.exports = class extends Generator {
     this.npmInstall([
       'body-parser',
       'express',
+      'aws-sdk',
     ])
   }
 }

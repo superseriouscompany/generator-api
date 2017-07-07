@@ -7,6 +7,7 @@
 ## Installation
 
     $ npm install
+    $ cp config/secrets.js{.tpl,} # edit and enter actual secrets values
 
 ## Running
 

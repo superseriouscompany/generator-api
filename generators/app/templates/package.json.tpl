@@ -11,5 +11,5 @@
     "dev": "nodemon",
     "test": "mocha"
   },
-  "author": "<%= author %>",
+  "author": "<%= author %>"
 }
