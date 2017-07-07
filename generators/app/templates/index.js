@@ -19,11 +19,11 @@ app.use(function(err, req, res, next) {
 
 if( process.env.NODE_ENV != 'production' && module.parent ) {
   module.exports = function(port) {
-    const ref    = app.listen(port);
-    const handle = ref.close.bind(ref);
-    return handle;
+    const ref    = app.listen(port)
+    const handle = ref.close.bind(ref)
+    return handle
   }
-  return;
+  return
 }
 
 app.listen(port, function() {
