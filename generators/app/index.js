@@ -47,7 +47,10 @@ module.exports = class extends Generator {
     [
       'README.md.tpl',
       'package.json.tpl',
-      'config/index.js.tpl'
+      'config/index.js.tpl',
+      'config/development.js.tpl',
+      'config/production.js.tpl',
+      'config/secrets.js.tpl'
     ].forEach((path) => {
       this.fs.copyTpl(
         this.templatePath(path),

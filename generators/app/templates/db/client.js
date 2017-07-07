@@ -5,7 +5,7 @@ module.exports = function(AWS, endpoint) {
 
   // TODO: check for region
   const lowLevel = new AWS.DynamoDB(endpoint)
-  const client   = new AWS.DynamoDB.DocumentClient(endpoint)
+  var client     = new AWS.DynamoDB.DocumentClient(endpoint)
 
   client = promisifyAll(client)
 
