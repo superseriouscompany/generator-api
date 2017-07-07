@@ -1,7 +1,11 @@
 'use strict';
 const AWS         = require('aws-sdk');
 const secrets     = require('./secrets');
-const environment = process.env.NODE_ENV || 'development';
+
+var environment = process.env.NODE_ENV || 'development';
+if( global.TEST_MODE ) {
+  environment = 'test'
+}
 
 module.exports = Object.assign({
   baseUrl:                 '<%= baseUrl %>',
