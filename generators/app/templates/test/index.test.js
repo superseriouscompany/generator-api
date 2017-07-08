@@ -17,15 +17,14 @@ describe('api', function() {
       }
     })
 
-    // TODO: wait only until docker container is started
-    setTimeout(() => {
+    waitForDynamo(+new Date, 2000, () => {
       var env = Object.assign({}, process.env, {NODE_ENV: 'test'})
 
       exec('node db/createTables', {env: env}, (err, stdout, stderr) => {
         if( err ) { return done(err) }
         done()
       })
-    }, 1000)
+    })
   })
 
   after(function() {
@@ -39,3 +38,17 @@ describe('api', function() {
    describe(fileName, require(`${routesPath}/${file}`))
   })
 })
+
+function waitForDynamo(since, time, cb) {
+  exec('echo > /dev/tcp/localhost/8000', (err, stdout, stderr) => {
+    if( err ) {
+      if( err.message.match(/Connection refused/) ) {
+        if( +new Date > since + time ) { return cb(new Error(`Timed out after ${time / 1000} seconds.`)) }
+        return waitForDynamo(since, time, cb)
+      }
+      cb(err)
+    }
+
+    cb(null, true)
+  })
+}
