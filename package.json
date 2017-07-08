@@ -1,6 +1,6 @@
 {
   "name": "generator-tinyapi",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Generate an express api with mocha for testing. Supports dynamo for backend.",
   "main": "index.js",
   "scripts": {
