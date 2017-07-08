@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/superseriouscompany/generator-api.git"
+    "url": "git+ssh://git@github.com/superseriouscompany/generator-tinyapi.git"
   },
   "files": [
     "generators"
@@ -19,9 +19,9 @@
   "author": "Neil Sarkar",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/superseriouscompany/generator-api/issues"
+    "url": "https://github.com/superseriouscompany/generator-tinyapi/issues"
   },
-  "homepage": "https://github.com/superseriouscompany/generator-api#readme",
+  "homepage": "https://github.com/superseriouscompany/generator-tinyapi#readme",
   "dependencies": {
     "yeoman-generator": "^1.1.1"
   }
