@@ -13,29 +13,6 @@ My goal is to make this do as little as possible while still being useful.
     $ mkdir <projectname> && cd <projectname>
     $ yo tinyapi
 
-## Features
-
-* express server
-  * autoload all routes from `routes/` folder
-  * healthcheck endpoint
-  * catchall error handler
-  * returns a handle to close server for use with tests
-
-
-* mocha integration tests
-  * support for factories a la factory_girl
-  * api request helper with defaults
-  * start server automatically before tests and stop after  
-
-
-* configuration based on NODE_ENV
-
-
-* dynamo support
-  * script to create and delete tables
-  * promisified client
-  * local support for testing through docker
-
 ## Directory Structure
 
     config/     # environment based config
@@ -45,3 +22,29 @@ My goal is to make this do as little as possible while still being useful.
     test/       # mocha integration tests
     index.js    # express server
     henoku.sh   # sets up git-based deploys on host of your choice
+
+## Features
+
+#### Express Server
+
+  * autoload all routes from `routes/` folder
+  * healthcheck endpoint
+  * catchall error handler
+  * returns a handle to close server for use with tests
+
+
+#### Mocha HTTP Tests
+
+  * support for factories a la factory_girl
+  * api request helper with defaults
+  * start server automatically before tests and stop after  
+
+
+#### Configuration based on NODE_ENV
+
+
+#### Dynamo support
+
+  * script to create and delete tables
+  * promisified client
+  * local support for testing through docker
