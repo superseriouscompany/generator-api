@@ -1,4 +1,3 @@
-global.TEST_MODE = true
 const expect     = require('expect')
 const api        = require('../lib/api')
 
