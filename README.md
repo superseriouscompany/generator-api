@@ -12,6 +12,8 @@ My goal is to make this do as little as possible while still being useful.
 
     $ mkdir <projectname> && cd <projectname>
     $ yo tinyapi
+    $ npm test
+    $ npm start
 
 ## Directory Structure
 
