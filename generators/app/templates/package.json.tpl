@@ -4,7 +4,7 @@
   "description": "<%= name %> api",
   "main": "index.js",
   "scripts": {
-    "start":        "[[ $NODE_ENV = \"production\" ]] && node index.js || nodemon",
+    "start":        "if [ \"$NODE_ENV\" = \"production\" ]; then node index.js; else nodemon; fi",
     "test":         "mocha",
     "dropTables":   "node db/dropTables.js",
     "createTables": "node db/createTables.js",
