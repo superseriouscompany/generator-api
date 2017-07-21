@@ -19,6 +19,7 @@ describe('api', function() {
 
       if( up ) { createTables(done) }
       else {
+        console.log('Starting in-memory dynamo. Run dynamo in another tab with `npm run dynamo` for faster test startup.')
         dynamoProcess = exec('docker run -p 8000:8000 deangiberson/aws-dynamodb-local', (err,stdout,stderr) => {
           if( !err.killed ) {
             console.error(err.message)
