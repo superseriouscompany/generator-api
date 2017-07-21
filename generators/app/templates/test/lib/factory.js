@@ -7,7 +7,13 @@ const factory = {
     }, user || {})
 
     return api.post('/users', { body: user }).then((response) => {
-      return response.body
+      const user = response.body
+      Object.defineProperty(user, 'api', {
+        get: function() {
+          return api.authenticated(user.accessToken || user.access_token)
+        }
+      })
+      return user
     })
   }
 }
