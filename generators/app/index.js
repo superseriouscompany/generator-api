@@ -72,6 +72,7 @@ module.exports = class extends Generator {
       'mocha',
       'request',
       'request-promise',
+      'nodemon',
     ], { 'save-dev': true })
 
     this.npmInstall([
