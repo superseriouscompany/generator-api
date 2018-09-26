@@ -1,4 +1,4 @@
 module.exports = {
-  accessKeyId:     '<%= awsAccessKey %>',
-  secretAccessKey: '<%= awsSecretKey %>',
+  awsAccessKey:     '<%= awsAccessKey %>',
+  awsSecretKey:     '<%= awsSecretKey %>',
 }
