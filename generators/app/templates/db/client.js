@@ -30,6 +30,61 @@ module.exports = function(AWS, endpoint) {
     })
   }
 
+  client.bulk = function(tableName, ids, fields) {
+    if( !tableName ) { return Promise.reject(new Error('InputError: tableName is null')) }
+    if( !ids || !ids.length ) { return Promise.reject(new Error('InputError: ids are null, empty or not an array')) }
+    if( !fields || !fields.length ) { return Promise.reject(new Error('InputError: fields are null, empty or not an array')) }
+
+    // https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
+    ids = Array.from(new Set(ids))
+
+    return client.batchGetAsync({
+      RequestItems: {
+        [tableName]: {
+          Keys: ids.map((id) => {
+            return { id: id }
+          }),
+          AttributesToGet: fields,
+        }
+      }
+    }).then((payload) => {
+      return payload.Responses[tableName]
+    })
+  }
+
+  client.updateFields = function(tableName, id, fields, whitelist) {
+    var updateExpression = 'set '
+    var attributeNames   = {}
+    var attributeValues  = {}
+    var hadValues = false;
+    whitelist.forEach(function(field) {
+      if( fields[field] !== undefined && fields[field] !== '') {
+        attributeNames[`#${field}`]  = field
+        attributeValues[`:${field}`] = fields[field]
+        updateExpression += `#${field} = :${field},`
+        hadValues = true
+      }
+    })
+    if( !hadValues ) { return Promise.reject(new Error(`InputError: no fields found matching ${whitelist.join(', ')} in ${Object.keys(fields).join(', ')}`)) }
+    updateExpression = updateExpression.substring(0,updateExpression.length - 1);
+
+    return client.updateAsync({
+      TableName:                 tableName,
+      Key:                       { id: id },
+      ConditionExpression:       'attribute_exists(id)',
+      UpdateExpression:          updateExpression,
+      ExpressionAttributeValues: attributeValues,
+      ExpressionAttributeNames:  attributeNames,
+    }).then(function(ok) {
+      return true;
+    }).catch(function(err) {
+      if( err.name == 'ConditionalCheckFailedException' ) {
+        throw new Error('NotFound')
+      }
+      throw err;
+    });
+  }
+
   client.lowLevel = lowLevel
 
   return client
